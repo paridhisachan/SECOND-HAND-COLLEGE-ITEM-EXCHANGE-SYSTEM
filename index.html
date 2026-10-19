@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusExchange - Graphic Era Item Exchange</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #143769; /* GEU Blue */
+            --primary-light: #eef4f9;
+            --accent: #ff6b6b;
+            --success: #28a745;
+            --text-dark: #333333;
+            --text-light: #6c757d;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --radius: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-search {
+            flex: 0.5;
+            display: flex;
+            background: var(--primary-light);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+        }
+
+        .nav-search input {
+            border: none;
+            background: transparent;
+            width: 100%;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .btn {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .wishlist-btn {
+            position: relative;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary), #1e4d8c);
+            color: var(--white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 0.6rem 1rem;
+            border: 1px solid #ced4da;
+            border-radius: var(--radius);
+            background: var(--white);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img {
+            height: 180px;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        .wishlist-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: color 0.2s;
+        }
+
+        .wishlist-icon.active {
+            color: var(--accent);
+        }
+
+        .card-body {
+            padding: 1.2rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .original-price {
+            font-size: 0.9rem;
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+
+        .seller-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            border-top: 1px solid #eee;
+            padding-top: 0.8rem;
+            margin-top: 0.8rem;
+        }
+
+        .trust-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content i {
+            font-size: 3rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .modal-content h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-content p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo"><i class="fa-solid fa-graduation-cap"></i> CampusExchange</a>
+            <div class="nav-search">
+                <input type="text" placeholder="Search lab coat, calculator, notes, laptop...">
+                <i class="fa-solid fa-magnifying-glass" style="color: var(--text-light); align-self: center;"></i>
+            </div>
+            <div class="nav-actions">
+                <button class="wishlist-btn" onclick="triggerPriceAlert()" title="Wishlist Alerts">
+                    <i class="fa-solid fa-heart"></i>
+                    <span class="badge" id="wishlist-count">2</span>
+                </button>
+                <button class="btn">Student Login</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Graphic Era Item Exchange</h1>
+        <p>Buy, Sell, or Exchange books, instruments, and equipment securely on campus.</p>
+    </section>
+
+    <div class="container">
+        <div class="filters">
+            <select class="filter-select">
+                <option value="">All Categories</option>
+                <option value="lab">Lab Equipment</option>
+                <option value="books">Books & Notes</option>
+                <option value="electronics">Electronics</option>
+                <option value="bags">Bags & Accessories</option>
+            </select>
+            <select class="filter-select">
+                <option value="">Sort by: Featured</option>
+                <option value="low-high">Price: Low to High</option>
+                <option value="high-low">Price: High to Low</option>
+                <option value="trust">Seller Trust Score</option>
+            </select>
+        </div>
+
+        <!-- Product Grid matching the 5 C++ items -->
+        <div class="grid">
+            <!-- Item 1 -->
+            <div class="card">
+                <div class="card-img">
+                    <i class="fa-solid fa-shirt fa-2x"></i>
+                    <button class="wishlist-icon active" onclick="toggleWishlist(this)"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">Engineering Chemistry Lab Coat</div>
+                    <div class="price-row">
+                        <div>
+                            <span class="price">₹300</span>
+                            <span class="original-price">₹500</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--success); font-weight: 600;">Available</span>
+                    </div>
+                    <div class="seller-info">
+                        <span>Seller: Rohan Chaudhary</span>
+                        <span class="trust-badge"><i class="fa-solid fa-star" style="color: #f1c40f;"></i> 4.8/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="card">
+                <div class="card-img">
+                    <i class="fa-solid fa-calculator fa-2x"></i>
+                    <button class="wishlist-icon active" onclick="toggleWishlist(this)"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">Scientific Calculator (Casio)</div>
+                    <div class="price-row">
+                        <div>
+                            <span class="price">₹250</span>
+                            <span class="original-price">₹800</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--accent); font-weight: 600;">Lowest Price!</span>
+                    </div>
+                    <div class="seller-info">
+                        <span>Seller: Paridhi Sachan</span>
+                        <span class="trust-badge"><i class="fa-solid fa-star" style="color: #f1c40f;"></i> 4.9/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="card">
+                <div class="card-img">
+                    <i class="fa-solid fa-book fa-2x"></i>
+                    <button class="wishlist-icon active" onclick="toggleWishlist(this)"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">DSA Complete Handwritten Notes</div>
+                    <div class="price-row">
+                        <div>
+                            <span class="price">₹500</span>
+                            <span class="original-price">₹1000</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--accent); font-weight: 600;">Lowest Price!</span>
+                    </div>
+                    <div class="seller-info">
+                        <span>Seller: Kanav Arora</span>
+                        <span class="trust-badge"><i class="fa-solid fa-star" style="color: #f1c40f;"></i> 5.0/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 4 -->
+            <div class="card">
+                <div class="card-img">
+                    <i class="fa-solid fa-laptop fa-2x"></i>
+                    <button class="wishlist-icon" onclick="toggleWishlist(this)"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">Laptop (Core i5 11th Gen)</div>
+                    <div class="price-row">
+                        <div>
+                            <span class="price">₹25,000</span>
+                            <span class="original-price">₹45,000</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--success); font-weight: 600;">Available</span>
+                    </div>
+                    <div class="seller-info">
+                        <span>Seller: Rohan Chaudhary</span>
+                        <span class="trust-badge"><i class="fa-solid fa-star" style="color: #f1c40f;"></i> 4.7/5</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 5 -->
+            <div class="card">
+                <div class="card-img">
+                    <i class="fa-solid fa-bag-shopping fa-2x"></i>
+                    <button class="wishlist-icon" onclick="toggleWishlist(this)"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <div class="card-body">
+                    <div class="card-title">College Backpack / Bags</div>
+                    <div class="price-row">
+                        <div>
+                            <span class="price">₹500</span>
+                            <span class="original-price">₹1200</span>
+                        </div>
+                        <span style="font-size: 0.8rem; color: var(--success); font-weight: 600;">Available</span>
+                    </div>
+                    <div class="seller-info">
+                        <span>Seller: Paridhi Sachan</span>
+                        <span class="trust-badge"><i class="fa-solid fa-star" style="color: #f1c40f;"></i> 4.6/5</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="alertModal">
+        <div class="modal-content">
+            <i class="fa-solid fa-bell fa-shake" style="color: var(--success);"></i>
+            <h3>Price Drop Alert!</h3>
+            <p>Your wishlist item <strong>"Scientific Calculator (Casio)"</strong> has reached its lowest recorded price (₹250)! Grab it now.</p>
+            <button class="btn" onclick="closeModal()">View Item</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleWishlist(btn) {
+            btn.classList.toggle('active');
+            let countBadge = document.getElementById('wishlist-count');
+            let count = parseInt(countBadge.innerText);
+            if(btn.classList.contains('active')) {
+                countBadge.innerText = count + 1;
+            } else {
+                countBadge.innerText = Math.max(0, count - 1);
+            }
+        }
+
+        function triggerPriceAlert() {
+            document.getElementById('alertModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('alertModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
